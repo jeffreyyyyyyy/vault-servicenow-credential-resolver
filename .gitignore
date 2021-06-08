@@ -1,3 +1,4 @@
+.idea/
 *.jar
 *.zip
 .DS_Store
@@ -5,3 +6,4 @@
 ._*
 .Spotlight-V100
 .Trashes
+/.metadata/
