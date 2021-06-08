@@ -1,4 +1,4 @@
-package com.snc.discovery;
+package com.hashicorp.vault.snc;
 
 import java.util.*;
 import java.io.*;
