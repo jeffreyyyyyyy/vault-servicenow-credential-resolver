@@ -1,4 +1,4 @@
-package com.hashicorp.vault.snc;
+package com.snc.discovery;
 
 import java.util.*;
 import java.io.*;
@@ -63,56 +63,56 @@ public class CredentialResolver {
     public CredentialResolver() {
     }
 
-    private void loadProps() {
-        if(fProps == null)
-            fProps = new Properties();
-
-        try {
-            String propFilePath = System.getenv(ENV_VAR);
-            if(propFilePath == null) {
-                System.err.println("Environment var "+ENV_VAR+" not found. Using default file: "+DEFAULT_PROP_FILE_PATH);
-                propFilePath = DEFAULT_PROP_FILE_PATH;
-            }
-
-            File propFile = new File(propFilePath);
-            if(!propFile.exists() || !propFile.canRead()) {
-                System.err.println("Can't open "+propFile.getAbsolutePath());
-            }
-            else {
-                InputStream propsIn = new FileInputStream(propFile);
-                fProps.load(propsIn);
-            }
-            //fProps.load(CredentialResolver.class.getClassLoader().getResourceAsStream("dummycredentials.properties"));
-        } catch (IOException e) {
-            System.err.println("Problem loading credentials file:");
-            e.printStackTrace();
-        }
-    }
+//    private void loadProps() {
+//        if(fProps == null)
+//            fProps = new Properties();
+//
+//        try {
+//            String propFilePath = System.getenv(ENV_VAR);
+//            if(propFilePath == null) {
+//                System.err.println("Environment var "+ENV_VAR+" not found. Using default file: "+DEFAULT_PROP_FILE_PATH);
+//                propFilePath = DEFAULT_PROP_FILE_PATH;
+//            }
+//
+//            File propFile = new File(propFilePath);
+//            if(!propFile.exists() || !propFile.canRead()) {
+//                System.err.println("Can't open "+propFile.getAbsolutePath());
+//            }
+//            else {
+//                InputStream propsIn = new FileInputStream(propFile);
+//                fProps.load(propsIn);
+//            }
+//            //fProps.load(CredentialResolver.class.getClassLoader().getResourceAsStream("dummycredentials.properties"));
+//        } catch (IOException e) {
+//            System.err.println("Problem loading credentials file:");
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * Resolve a credential.
      */
     public Map resolve(Map args) {
-        loadProps();
+        //loadProps();
         String id = (String) args.get(ARG_ID);
         String type = (String) args.get(ARG_TYPE);
-        String keyPrefix = id+"."+type+".";
+        //String keyPrefix = id+"."+type+".";
 
         if(id.equalsIgnoreCase("misbehave"))
             throw new RuntimeException("I've been a baaaaaaaaad CredentialResolver!");
 
         // the resolved credential is returned in a HashMap...
         Map result = new HashMap();
-        result.put(VAL_USER, fProps.get(keyPrefix + VAL_USER));
-        result.put(VAL_PSWD, fProps.get(keyPrefix + VAL_PSWD));
-        result.put(VAL_PKEY, fProps.get(keyPrefix + VAL_PKEY));
-        result.put(VAL_PASSPHRASE, fProps.get(keyPrefix + VAL_PASSPHRASE));
-        result.put(VAL_AUTHPROTO, fProps.get(keyPrefix + VAL_AUTHPROTO));
-        result.put(VAL_AUTHKEY, fProps.get(keyPrefix + VAL_AUTHKEY));
-        result.put(VAL_PRIVPROTO, fProps.get(keyPrefix + VAL_PRIVPROTO));
-        result.put(VAL_PRIVKEY, fProps.get(keyPrefix + VAL_PRIVKEY));
+        result.put(VAL_USER, "ssh-user");
+        //result.put(VAL_PSWD, fProps.get(keyPrefix + VAL_PSWD));
+        result.put(VAL_PKEY, "FOO");
+        //result.put(VAL_PASSPHRASE, fProps.get(keyPrefix + VAL_PASSPHRASE));
+        //result.put(VAL_AUTHPROTO, fProps.get(keyPrefix + VAL_AUTHPROTO));
+        //result.put(VAL_AUTHKEY, fProps.get(keyPrefix + VAL_AUTHKEY));
+        //result.put(VAL_PRIVPROTO, fProps.get(keyPrefix + VAL_PRIVPROTO));
+        //result.put(VAL_PRIVKEY, fProps.get(keyPrefix + VAL_PRIVKEY));
 
-        System.err.println("Error while resolving credential id/type["+id+"/"+type+"]");
+        System.err.println("Did some phony resolving for credential id/type["+id+"/"+type+"]");
 
         return result;
     }
@@ -127,7 +127,7 @@ public class CredentialResolver {
 
     public static void main(String[] args) {
         CredentialResolver obj = new CredentialResolver();
-        obj.loadProps();
+        //obj.loadProps();
 
         System.err.println("I spy the following credentials: ");
         for(Object key: obj.fProps.keySet()) {

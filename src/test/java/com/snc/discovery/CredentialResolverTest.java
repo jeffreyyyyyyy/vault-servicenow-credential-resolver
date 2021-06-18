@@ -1,4 +1,4 @@
-package com.hashicorp.vault.snc;
+package com.snc.discovery;
 
 import org.junit.jupiter.api.Test;
 
