@@ -63,6 +63,8 @@ configurations["integrationTestRuntimeOnly"].extendsFrom(configurations.runtimeO
 dependencies {
 	integrationTestImplementation("junit:junit:4.13.2")
 	integrationTestImplementation("org.testcontainers:testcontainers:1.15.3")
+	integrationTestImplementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.1"))
+	integrationTestImplementation("com.squareup.okhttp3:okhttp-tls")
 }
 
 // Create the gradle task so we can run `./gradlew integrationTest`
