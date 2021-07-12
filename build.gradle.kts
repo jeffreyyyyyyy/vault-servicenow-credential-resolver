@@ -1,6 +1,8 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
+import java.io.ByteArrayOutputStream
+
 plugins {
 	// https://docs.gradle.org/current/userguide/java_plugin.html#java_plugin
 	java
@@ -30,12 +32,47 @@ sourceSets {
 	}
 }
 
+// Copy mid jars for build
+tasks.register("copyMidJars") {
+	group = "build"
+	description = "Copy MID Jars from docker image"
+	val srcDir = "/opt/agent/lib"
+	val destDir = "build/mid"
+	val jars = listOf("mid.jar", "commons-glide.jar")
+	outputs.files(jars.map { "${destDir}/${it}" })
+
+	// Code inside doLast will only run if Gradle decides the task needs running,
+	// e.g. if the Jars are not already in place.
+	doLast {
+		println("Copying MID Jars")
+		val output = ByteArrayOutputStream()
+		exec {
+			commandLine("docker", "create", "moers/mid-server:${System.getenv("MID_SERVER_VERSION") ?: "quebec"}")
+			standardOutput = output
+		}
+		val id = output.toString().trim()
+		for (jar in jars) {
+			exec {
+				commandLine("docker", "cp", "${id}:${srcDir}/${jar}", destDir)
+			}
+		}
+		exec {
+			commandLine("docker", "rm", "-v", id)
+			// Suppress output from docker rm
+			standardOutput = output
+		}
+	}
+}
+
 dependencies {
 	implementation("com.google.code.gson:gson:2.8.7")
 	implementation("org.apache.httpcomponents:httpclient:4.5.13")
 
 	// lib/ folder requires mid.jar and commons-glide.jar to build
-	implementation(fileTree("lib") { include("*.jar") })
+	implementation(fileTree("build/mid") {
+		include("*.jar")
+		builtBy("copyMidJars")
+	} )
 
 	testImplementation("junit:junit:4.13.2")
 	testImplementation("com.github.tomakehurst:wiremock-jre8:2.28.1")
