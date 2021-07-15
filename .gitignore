@@ -18,3 +18,6 @@ build
 .Spotlight-V100
 .Trashes
 /.metadata/
+
+# Release pipeline
+/pkg/
