@@ -12,7 +12,7 @@ project "vault-servicenow-credential-resolver" {
   github {
     organization = "hashicorp"
     repository = "vault-servicenow-credential-resolver"
-    release_branches = ["main", "update-crt-prepare"]
+    release_branches = ["main"]
   }
 }
 
