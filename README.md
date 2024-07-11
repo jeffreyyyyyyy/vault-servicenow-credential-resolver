@@ -48,3 +48,7 @@ You can then find the built JAR at `build/libs/vault-servicenow-credential-resol
 [external credential storage]: https://docs.servicenow.com/bundle/quebec-servicenow-platform/page/product/credentials/concept/c_ExternalCredentialStorage.html
 [vaultproject.io]: https://vaultproject.io/docs/platform/servicenow
 [bmoers/docker-mid-server]: https://github.com/bmoers/docker-mid-server
+
+## Notes
+
+Please ensure any changes made to the LICENSE file are copied to ./src/main/resources/META-INF/.
