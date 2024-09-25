@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.*;
 
 public class CredentialResolverTest {
-    private static final String VAULT_IMAGE = "hashicorp/vault:1.7.3";
+    private static final String VAULT_IMAGE = "hashicorp/vault:1.17.6";
     private static final Gson gson = new Gson();
     private static final Network network = Network.newNetwork();
 
@@ -111,7 +111,7 @@ public class CredentialResolverTest {
         HashMap<String, String> input = new HashMap<>();
         input.put(CredentialResolver.ARG_ID, "secret/data/ssh");
         HttpResponseException e = assertThrows(HttpResponseException.class, () -> cr.resolve(input));
-        assertErrorContains(e, "400.*errors.*missing client token");
+        assertErrorContains(e, "status code: 403.+");
     }
 
     @Test
