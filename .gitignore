@@ -22,3 +22,7 @@ build
 # Release pipeline
 /pkg/
 /bin/
+/lib/
+
+# misc
+scratch/

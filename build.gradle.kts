@@ -43,7 +43,13 @@ tasks.register("copyMidJars") {
 	description = "Copy MID Jars from docker image"
 	val srcDir = "/opt/agent/lib"
 	val destDir = "build/mid"
-	val jars = listOf("mid.jar", "commons-glide.jar")
+	val jars = listOf(
+        "commons-core-automation.jar",
+        "commons-glide.jar",
+        "guava.jar",
+        "mid.jar",
+        "snc-automation-api.jar",
+    )
 	outputs.files(jars.map { "${destDir}/${it}" })
 
 	// Code inside doLast will only run if Gradle decides the task needs running,
@@ -52,7 +58,7 @@ tasks.register("copyMidJars") {
 		println("Copying MID Jars")
 		val output = ByteArrayOutputStream()
 		exec {
-			commandLine("docker", "create", "moers/mid-server:${System.getenv("MID_SERVER_VERSION") ?: "sandiego"}")
+			commandLine("docker", "create", "moers/mid-server:${System.getenv("MID_SERVER_VERSION") ?: "washingtondc.08-31-2024_1809"}")
 			standardOutput = output
 		}
 		val id = output.toString().trim()

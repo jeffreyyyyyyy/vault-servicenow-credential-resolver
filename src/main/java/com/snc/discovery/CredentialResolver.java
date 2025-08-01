@@ -7,7 +7,6 @@ package com.snc.discovery;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.service_now.mid.services.Config;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -29,10 +28,6 @@ public class CredentialResolver {
     private static final Gson gson = new Gson();
     private final Function<String, String> getProperty;
 
-    public CredentialResolver() {
-        getProperty = prop -> Config.get().getProperty(prop);
-    }
-
     public CredentialResolver(Function<String, String> getProperty) {
         this.getProperty = getProperty;
     }
@@ -44,7 +39,7 @@ public class CredentialResolver {
     public static final String ARG_MID = "mid"; // the MID server making the request
 
     // Keys that may optionally be populated on resolve's output Map
-    public static final String VAL_USER = "user"; // the string user name for the credential
+    public static final String VAL_USER = "user"; // the string username for the credential
     public static final String VAL_PSWD = "pswd"; // the string password for the credential
     public static final String VAL_PASSPHRASE = "passphrase"; // the string pass phrase for the credential
     public static final String VAL_PKEY = "pkey"; // the string private key for the credential
@@ -180,13 +175,13 @@ public class CredentialResolver {
         ValueAndSource password = valueAndSourceFromData(data, "secret_key", "current_password", "password");
         ValueAndSource privateKey = valueAndSourceFromData(data, "private_key");
         ValueAndSource passphrase = valueAndSourceFromData(data, "passphrase");
-        
+
         ValueAndSource authprotocol = valueAndSourceFromData(data, "authprotocol");
         ValueAndSource authkey = valueAndSourceFromData(data, "authkey");
         ValueAndSource privprotocol = valueAndSourceFromData(data, "privprotocol");
         ValueAndSource privkey = valueAndSourceFromData(data, "privkey");
         ValueAndSource bearer = valueAndSourceFromData(data, "bearer_token");
-        
+
         System.err.printf("Setting values from fields %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s%n",
                 VAL_USER, username.source,
                 VAL_PSWD, password.source,
